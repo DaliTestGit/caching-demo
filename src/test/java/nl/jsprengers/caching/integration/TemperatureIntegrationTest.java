@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.support.NullValue;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -43,13 +45,21 @@ public class TemperatureIntegrationTest {
 
     @Test
     public void testGetTemperatureStorePostCode() {
-        String temperatureForPostcode = controller.getTemperature("1234AA").getBody();
-        PostCode cachedPostcode = (PostCode) postCodeCache.asMap().get("1234AA");
+        String postcode = "1000AA";
+        String temperatureForPostcode = controller.getTemperature(postcode).getBody();
+        PostCode cachedPostcode = (PostCode) postCodeCache.asMap().get(postcode);
         assertThat(temperatureCache.asMap()).containsKey(cachedPostcode.getCoordinate());
         for (int i = 0; i < 100; i++) {
             controller.getTemperature("1234AA");
-            assertThat(temperatureForPostcode).isEqualTo(controller.getTemperature("1234AA"));
+            assertThat(temperatureForPostcode).isEqualTo(controller.getTemperature(postcode).getBody());
         }
+    }
+
+    @Test
+    public void testNullPostcodeIsAlsoCached() {
+        assertThat(controller.getTemperature("1234XX").getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(postCodeCache.asMap().get("1234XX")).isInstanceOf(NullValue.class);
+
     }
 
     private Cache getAndInvalidate(String name) {

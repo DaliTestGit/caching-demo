@@ -22,8 +22,11 @@ public class WeatherStationTest {
     @Test
     public void testIncrements() {
         station.init();
+        float previous = 0;
         for (int i = 0; i < 1000; i++) {
-            System.out.println(station.getForCoordinate(15));
+            float forCoordinate = station.getForCoordinate(15);
+            assertThat(Math.abs(previous - forCoordinate)).isGreaterThan(0);
+            previous = forCoordinate;
         }
 
     }

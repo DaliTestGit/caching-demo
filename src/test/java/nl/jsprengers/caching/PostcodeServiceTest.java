@@ -1,6 +1,7 @@
 package nl.jsprengers.caching;
 
 import com.google.common.collect.ImmutableMap;
+import nl.jsprengers.caching.db.PostcodeDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +30,13 @@ public class PostcodeServiceTest {
     @InjectMocks
     PostcodeService service;
 
-    @Test
-    public void testValidPostCode() {
-        assertThat(service.getPostcode("5941ED").getCoordinate()).isEqualTo(59);
-    }
+    @Mock
+    PostcodeDao postcodeDao;
 
     @Test
-    public void testInvalidPostCode() {
-        assertThatThrownBy(() -> service.getPostcode("5941E")).hasMessage("Not a valid postcode: 5941E");
+    public void getPostCodeQueriesDao() {
+        service.getPostcode("5941ED");
+        verify(postcodeDao).findByCode("5941ED");
     }
+
 }

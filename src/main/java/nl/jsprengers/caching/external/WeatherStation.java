@@ -14,7 +14,7 @@ public class WeatherStation {
     private Map<Integer, RotatingValue> measurements = new HashMap<>();
 
     @PostConstruct
-    void init() {
+    public void init() {
         for (int i = 10; i < 100; i++)
             measurements.put(i, new RotatingValue());
     }
