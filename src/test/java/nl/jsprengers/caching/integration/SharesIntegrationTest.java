@@ -23,11 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class})
 @WebIntegrationTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class StocksIntegrationTest {
+public class SharesIntegrationTest {
     @Autowired
     CacheManager cacheManager;
-    Cache stocksCache;
+    Cache sharesCache;
 
     @Autowired
     SharesService sharesService;
@@ -35,26 +34,22 @@ public class StocksIntegrationTest {
     @Autowired
     StockExchange stockExchange;
 
-    @Autowired
-    Controller controller;
-
-    @BeforeClass
-    public static void setupClass() {
-    }
-
     @Before
     public void setup() {
-        stocksCache = getAndInvalidate(CacheConfig.STOCKS_CACHE);
+        sharesCache = getAndInvalidate(CacheConfig.SHARES_CACHE);
     }
 
     @Test
-    public void testStocks() {
+    public void testShares() {
         float value = sharesService.getValue(Shares.AKZO.name());
-        assertThat(stocksCache.asMap()).containsKey("AKZO");
+        assertThat(sharesCache.asMap()).containsKey("AKZO");
+        //retrieves from cache:
+        assertThat(sharesService.getValue(Shares.AKZO.name())).isEqualTo(value);
         stockExchange.invalidateAllPrices();
-        assertThat(stocksCache.asMap()).doesNotContainKey("AKZO");
         float updatedValue = sharesService.getValue(Shares.AKZO.name());
         assertThat(value).isNotEqualTo(updatedValue);
+        //retrieves from cache:
+        assertThat(sharesService.getValue(Shares.AKZO.name())).isEqualTo(updatedValue);
     }
 
     private Cache getAndInvalidate(String name) {

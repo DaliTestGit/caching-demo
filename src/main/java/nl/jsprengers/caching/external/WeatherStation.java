@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Service
 public class WeatherStation {
@@ -20,7 +19,7 @@ public class WeatherStation {
     }
 
     public float getForCoordinate(int coordinate) {
-        return measurements.get(coordinate).getNextValue();
+        return measurements.get(coordinate).increment();
     }
 
 }

@@ -24,14 +24,14 @@ public class StockExchange {
     @Autowired
     SharesService sharesService;
 
-    public float getValue(String stockName) {
-        return shares.get(validateName(stockName).name()).getNextValue();
+    public float getValue(String share) {
+        return shares.get(validateName(share).name()).increment();
     }
 
     public void invalidateAllPrices() {
         shares.entrySet().stream().forEach(entry -> {
-            entry.getValue().getNextValue();
-            sharesService.invalidateShare(entry.getKey());
+            float nextValue = entry.getValue().increment();
+            sharesService.setNewSharePrice(entry.getKey(), nextValue);
         });
     }
 

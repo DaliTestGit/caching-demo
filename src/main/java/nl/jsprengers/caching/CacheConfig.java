@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class CacheConfig {
     public static final String POSTCODE_CACHE = "postcode";
     public static final String TEMPERATURE_CACHE = "temperature";
-    public static final String STOCKS_CACHE = "stocks";
+    public static final String SHARES_CACHE = "shares";
 
     @Value("${cache.postcode.maximum.size:1000}")
     private int postcodeMaxSize;
@@ -29,22 +29,22 @@ public class CacheConfig {
         simpleCacheManager.setCaches(Arrays.asList(
                 buildPostCodeCache(),
                 buildTemperatureCache(),
-                buildStocksCache()
+                buildSharesCache()
         ));
         return simpleCacheManager;
     }
 
     private GuavaCache buildTemperatureCache() {
         return new GuavaCache(TEMPERATURE_CACHE, CacheBuilder
-                .newBuilder().expireAfterWrite(expiryTemperatureSeconds,
-                        TimeUnit.SECONDS).build(),
+                .newBuilder()
+                .expireAfterWrite(expiryTemperatureSeconds, TimeUnit.SECONDS)
+                .build(),
                 false);
-
     }
 
 
-    private GuavaCache buildStocksCache() {
-        return new GuavaCache(STOCKS_CACHE,
+    private GuavaCache buildSharesCache() {
+        return new GuavaCache(SHARES_CACHE,
                 CacheBuilder.newBuilder().build(), false);
     }
 

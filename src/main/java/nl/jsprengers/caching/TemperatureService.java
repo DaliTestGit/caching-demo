@@ -20,5 +20,4 @@ public class TemperatureService {
         LOGGER.info("Getting temperature from weather station {} ", coordinate);
         return weatherStation.getForCoordinate(coordinate);
     }
-
 }
