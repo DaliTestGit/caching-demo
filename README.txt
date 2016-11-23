@@ -19,3 +19,9 @@ This is a simple demo application to accompany my tutorial on caching with Sprin
  http://localhost:8080/share/FACEBOOK
 
 link to author blog: https://blog.codecentric.de/en/2016/03/caching-de-luxe-spring-guava/
+
+================================
+
+To generate cobertura coverage report:
+ mvn corbetura:corbeture
+
