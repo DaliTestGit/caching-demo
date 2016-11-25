@@ -1,0 +1,5 @@
+projectKey=org.sonarqube:Cache-demo
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/org.sonarqube:Cache-demo
+ceTaskId=AVidwR_eBt6Dfe2iAJ0t
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVidwR_eBt6Dfe2iAJ0t
